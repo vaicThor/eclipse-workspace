@@ -1,0 +1,25 @@
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class WindowCalc extends JFrame {
+	
+	private JPanel pan = new JPanel();
+	private JLabel lab = new JLabel("Result area");
+	
+	public WindowCalc() {
+		this.setTitle("the Calculator");
+		this.setSize(500,500);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		GridLayout gl = new GridLayout(4,3);
+		pan.add
+		pan.setLayout(gl);
+		
+	}
+
+	 
+}

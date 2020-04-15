@@ -1,0 +1,31 @@
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.ForkJoinPool;
+
+public class TestFindFile {
+
+	public static void main(String[] args) {
+		Path chemin = Paths.get("C:\\Users");
+		String filter = "*.psd";
+		FolderScanner fs = new FolderScanner(chemin, filter);
+		
+		// Nous récupérons le nombre de processeurs disponibles
+		int processors = Runtime.getRuntime().availableProcessors();
+		System.out.println("nbr of processor : "+ processors);
+		
+		// Nous créons notre pool de thread pour nos tâches de fond
+		ForkJoinPool pool = new ForkJoinPool(processors);
+		Long start = System.currentTimeMillis();
+		
+		//Nous lançons le traitement de notre tâche princiâle via le pool
+		pool.invoke(fs);
+		
+		Long end = System.currentTimeMillis();
+		
+		
+		System.out.println("Il y a "+fs.getResultat()+ " fichiers portant l'entension "+filter);
+		System.out.println("Temps de traitement : "+(end-start));
+
+	}
+
+}

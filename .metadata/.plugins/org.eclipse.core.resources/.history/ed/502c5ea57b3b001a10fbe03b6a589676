@@ -1,0 +1,16 @@
+
+public class Main {
+
+		public static float calculTTC(float prixHT,float TVA) {
+			float prixTTC = (1+TVA/100)*prixHT ;
+			
+			return prixTTC ;
+		}
+		public static void main(String[] args) {
+					System.out.println("Hello Fucking world!") ;
+			
+			float result = Main.calculTTC(10, 20);
+			System.out.println(result);
+		}
+	}
+

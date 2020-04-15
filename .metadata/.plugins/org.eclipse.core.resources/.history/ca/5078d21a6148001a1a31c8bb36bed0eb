@@ -1,0 +1,69 @@
+package amap;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import amap.dao.DAO;
+import amap.model.Product;
+
+public class ProductMysqlDAO extends DAO<Product>{
+
+	private Connection connection ;
+	
+	
+	public ProductMysqlDAO() {
+	connection = ConnectionManager.getConnection();
+}
+
+	@Override
+	public Product find(int id) {
+		Product productFound = null ;
+		
+		String query = "SELECT id, name, price, type FROM products WHERE id = " ; // on pourrait pour tout charger, remplacer "id, name, price, type" par *
+		
+		try (PreparedStatement pSt = connection.prepareStatement(query)){
+			pSt.setInt(1,  id);
+			
+			ResultSet rs = pSt.executeQuery();
+			if (rs.next()) {
+				productFound= toProduct(rs);
+			}
+		}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return productFound ;
+		
+	}
+	private Product toProduct (ResultSet rs) throws SQLException {
+		int id =  rs.getInt("id");
+		String name = rs.getString("name");
+		float price = rs.getFloat("price");
+		String type = rs.getString("type");
+		Product.ProductTypeEnum typeEnum = Product.ProductTypeEnum.valueOf(type) ;
+		return new Product (id, name, price, typeEnum) ;
+	}
+
+	@Override
+	public Product create(Product product) {
+		try(Pre)
+		return null;
+	}
+	public Product update(Product obj) {
+		return null ;
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Product> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

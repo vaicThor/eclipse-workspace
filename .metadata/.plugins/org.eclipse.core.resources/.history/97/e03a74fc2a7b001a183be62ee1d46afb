@@ -1,0 +1,54 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class WindowCalc extends JFrame {
+	
+	private JPanel container = new JPanel();
+	private JPanel numPan = new JPanel();
+	private JPanel opePan = new JPanel();
+	private JLabel lab = new JLabel("result area");
+	private Calculator calc;
+	
+	
+	public WindowCalc() {
+		this.setTitle("the Calculator");
+		this.setSize(500,500);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.calc = new Calculator();
+		this.calc.addObserver(new Observer() {
+			public void update(String result) {
+				lab.setText(result);
+			}
+		});
+		
+		container.setLayout(new BorderLayout());
+		container.add(lab,BorderLayout.NORTH);
+		
+		numPan.setLayout(new GridLayout(4,3));
+		numPan.add(new JButton("1"));
+		numPan.add(new JButton("2"));
+		numPan.add(new JButton("3"));
+		numPan.add(new JButton("4"));
+		numPan.add(new JButton("5"));
+		numPan.add(new JButton("6"));
+		numPan.add(new JButton("7"));
+		numPan.add(new JButton("8"));
+		numPan.add(new JButton("9"));
+		numPan.add(new JButton("0"));
+		numPan.add(new JButton("."));
+		numPan.add(new JButton("="));
+	
+		container.add(numPan,BorderLayout.CENTER);
+		this.setContentPane(container);
+		this.setVisible(true);
+	}
+
+	 
+}

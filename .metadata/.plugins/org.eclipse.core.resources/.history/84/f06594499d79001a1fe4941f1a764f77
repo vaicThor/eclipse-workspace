@@ -1,0 +1,17 @@
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public class Panneau extends JPanel{
+
+	public void paintComponent(Graphics g) {
+		//On verra cette phrase à chaque foique la méthode est invoquée
+		System.out.println("Je suis éxécutée !");
+		int x1 = this.getWidth()/4;
+		int y1 = this.getHeight()/4;
+		
+		g.fillOval(x1,y1, this.getWidth()/2,this.getHeight()/2);
+		g.drawRoundRect(50,50, 30, 50,10,10);
+	}
+	
+}

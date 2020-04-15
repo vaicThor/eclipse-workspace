@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;FenetreCercleAnim.java&apos; to &apos;FenetreCercleAnim.java&apos;&#x0D;&#x0A;- Original project: &apos;Progra_Evenementielle&apos;&#x0D;&#x0A;- Destination element: &apos;FenetreCercleAnim.java&apos;&#x0D;&#x0A;- Original element: &apos;FenetreCercleAnim.java&apos;" description="Copy compilation unit" destination="/src&lt;{FenetreCercleAnim.java" element1="/src&lt;{FenetreCercleAnim.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1586888893978" units="1" version="1.0"/>
+</session>

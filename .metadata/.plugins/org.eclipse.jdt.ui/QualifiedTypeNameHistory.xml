@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="amap.ConnectionManager"/>
+<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="amap.model.Product.ProductTypeEnum"/>
+<fullyQualifiedTypeName name="amap.services.ProductService"/>
+<fullyQualifiedTypeName name="amap.ProductMysqlDAO"/>
+<fullyQualifiedTypeName name="javax.annotation.Generated"/>
+<fullyQualifiedTypeName name="com.intiformation.app.dao.PlaceDAO"/>
+<fullyQualifiedTypeName name="com.intiformation.app.InterractiveManager"/>
+<fullyQualifiedTypeName name="com.intiformation.app.interactive.InterractiveManager"/>
+<fullyQualifiedTypeName name="com.intiformation.app.model.Place"/>
+<fullyQualifiedTypeName name="com.intiformation.app.dao.service.PlaceService"/>
+<fullyQualifiedTypeName name="com.intiformation.app.model.Trip"/>
+<fullyQualifiedTypeName name="com.intiformation.app.dao.service.TripService"/>
+<fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+<fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="com.compositepattern.PrimeMinister"/>
+<fullyQualifiedTypeName name="com.compositepattern.HealthSecretary"/>
+<fullyQualifiedTypeName name="com.compositepattern.HospitalPublicDirector"/>
+<fullyQualifiedTypeName name="com.compositepattern.ChefHospital"/>
+<fullyQualifiedTypeName name="CarElement"/>
+<fullyQualifiedTypeName name="CarElementVisitor"/>
+<fullyQualifiedTypeName name="com.compositepattern.SimpleEmployer"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.compositepattern.Employee"/>
+<fullyQualifiedTypeName name="com.compositepattern.MinistreOfHealth"/>
+<fullyQualifiedTypeName name="com.compositepattern.HealthMinister"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,6 @@
+
+public interface Observable {
+void addObservater(Observateur obs) ;
+void updateObservater();
+void delObservater();
+}

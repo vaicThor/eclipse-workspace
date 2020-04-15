@@ -1,0 +1,90 @@
+package amap;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import amap.dao.DAO;
+import amap.model.Product;
+
+public class ProductMysqlDAO extends DAO<Product>{
+
+	private Connection connection ;
+	
+	
+	public ProductMysqlDAO() {
+	connection = ConnectionManager.getConnection();
+}
+
+	@Override
+	public Product find(int id) {
+		Product productFound = null ;
+		
+		String query = "SELECT id, name, price, type FROM products WHERE id = " ; // on pourrait pour tout charger, remplacer "id, name, price, type" par *
+		
+		try (PreparedStatement pSt = connection.prepareStatement(query)){
+			pSt.setInt(1,  id);
+			
+			ResultSet rs = pSt.executeQuery();
+			if (rs.next()) {
+				productFound= toProduct(rs);
+			}
+		}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return productFound ;
+		
+	}
+	private Product toProduct (ResultSet rs) throws SQLException {
+		int id =  rs.getInt("id");
+		String name = rs.getString("name");
+		float price = rs.getFloat("price");
+		String type = rs.getString("type");
+		Product.ProductTypeEnum typeEnum = Product.ProductTypeEnum.valueOf(type) ;
+		return new Product (id, name, price, typeEnum) ;
+	}
+
+	@Override
+	public Product create(Product product) {
+		String queryInsert = "INSERT INTO tabletestamap VALUES ('"+product.getName()+"', "
+																  +product.getPrice()+",'"
+																  +product.getType()+")"; 
+		try(PreparedStatement pSt = connection.prepareStatement(queryInsert)){
+			
+//			pSt.setString(1, product.getName());
+//			pSt.setFloat(2, product.getPrice());
+//			pSt.setString(3, product.getType().toString());
+			
+			int row = pSt.executeUpdate() ;
+			
+			// Rows affected
+			System.out.println(row);
+			
+			DAO<Product> dao = new ProductMysqlDAO() ;
+			Product p = dao.find(product.getId());
+			
+		}catch (SQLException e) {
+			System.err.format("SQL state : %s\n%s", e.getSQLState(), e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return product ;
+	}
+	public Product update(Product obj) {
+		return null ;
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Product> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

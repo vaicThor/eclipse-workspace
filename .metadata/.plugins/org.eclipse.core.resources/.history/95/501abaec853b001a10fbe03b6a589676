@@ -1,0 +1,8 @@
+
+public class TvaUtil {
+	public static float calculTTC(float prixHT,float TVA) {
+		float prixTTC = (1+TVA/100)*prixHT ;
+		
+		return prixTTC ;
+	}
+}

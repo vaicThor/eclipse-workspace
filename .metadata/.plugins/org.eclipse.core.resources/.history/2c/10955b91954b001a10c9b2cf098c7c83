@@ -1,0 +1,223 @@
+package com.intiformation.app.dao.jdbc;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.intiformation.app.dao.TripDAO;
+import com.intiformation.app.model.Trip;
+
+
+
+public class JdbcTripDAO extends JdbcDAO implements TripDAO{
+	
+	//Attributes
+	private List<Trip> tripList ;
+	
+	//Constructor
+	public JdbcTripDAO() {
+		super();
+	}
+	// Methods
+	@Override
+	public Long createTrip(Trip trip) {
+		String queryInsert = "INSERT INTO trip(departures, arrivals, price) VALUES (?,?,?)"; 
+		try(PreparedStatement pSt = connection.prepareStatement(queryInsert,PreparedStatement.RETURN_GENERATED_KEYS)){
+			
+			pSt.setLong(1, trip.getDeparture());
+			pSt.setLong(2, trip.getArrival());
+			pSt.setFloat(3,trip.getPrice());
+			
+			int row = pSt.executeUpdate() ;
+			try {
+				// Do SQL updates...
+				// Commit updates
+				connection.commit();
+				System.out.println("Successfully commited changes to the database !");
+				} catch (SQLException e) {
+				try {
+				// Rollback update
+				connection.rollback();
+				System.out.println("Successfully rolled back changes from the database !");
+				} catch (SQLException e1) {
+				System.out.println("Could not rollback updates " + e1.getMessage());
+				}
+			}
+			
+			// Rows affected
+			System.out.println(row);
+			
+//			DAO<Product> dao = new ProductMysqlDAO() ;
+//			Product p = dao.find(product.getId());
+			
+		}catch (SQLException e) {
+			System.err.format("SQL state : %s\n%s", e.getSQLState(), e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return trip.getId() ;
+	} 
+
+
+	@Override
+	public Trip findTripById(Long id) {
+		Trip tripFound = null ;
+// Query SQL in order to get a ResulSet where place's id in the table trip place's name  
+ 		String queryFind ="SELECT t.id AS trip_id, t.departures AS departure_id , p1.name city_departure, t.arrivals AS city_departure, p2.name AS city_arrival"+
+ 							"FROM trip AS t"+
+ 							"JOIN place AS p1 ON p1.id_P = t.departures"+
+ 							"JOIN place AS p2 ON p2.id_P = t.arrivals"+
+ 							"WHERE t.id= ?;";
+		// Le preparedStatemet est plus sécurisé, plus rapide et permet de paramètrer la requète 
+		try (PreparedStatement pSt = connection.prepareStatement(queryFind,PreparedStatement.RETURN_GENERATED_KEYS)){
+			
+			pSt.setLong(1, id);
+			
+			ResultSet rs = pSt.executeQuery();
+			try {
+				// Do SQL updates...
+				// Commit updates
+				connection.commit();
+				System.out.println("Successfully commited changes to the database !");
+				} catch (SQLException e) {
+				try {
+				// Rollback update
+				connection.rollback();
+				System.out.println("Successfully rolled back changes from the database !");
+				} catch (SQLException e1) {
+				System.out.println("Could not rollback updates " + e1.getMessage());
+				}
+			}
+			
+			if (rs.next()) {
+				tripFound= toTrip(rs);
+			}
+		}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return tripFound ;
+		
+	}
+	private Trip toTrip (ResultSet rs) throws SQLException {
+		Long id 	   = rs.getLong("id");
+		Long departure = rs.getLong("departure");
+		Long arrival   = rs.getLong("arrival");
+		Float price    = rs.getFloat("price"); 
+		
+		return new Trip(id, departure, arrival, price) ;
+	}
+
+	@Override
+	public Boolean updateTrip(Trip newTrip) {
+		Boolean isUseless = false;
+		String queryUpdate = "SELECT id, departure, arrival, price FROM trip WHERE id= ?";
+		try (PreparedStatement pSt = connection.prepareStatement(queryUpdate)){
+			pSt.setLong(1,  newTrip.getId());
+			ResultSet rs = pSt.executeQuery();
+			try {
+				// Do SQL updates...
+				// Commit updates
+				connection.commit();
+				System.out.println("Successfully commited changes to the database !");
+				} catch (SQLException e) {
+				try {
+				// Rollback update
+				connection.rollback();
+				System.out.println("Successfully rolled back changes from the database !");
+				} catch (SQLException e1) {
+				System.out.println("Could not rollback updates " + e1.getMessage());
+				}
+			}
+	// Get the old Value in order to compare with the attributes of the newPlace
+				Trip tripOld = toTrip(rs);
+				
+			if ( tripOld.equals(newTrip)){
+				isUseless = true ;
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isUseless ;
+	}
+
+	@Override
+	public Boolean deleteTrip(Trip trip) {
+		Boolean isDelete = false;
+		String queryDelete = "DELETE FROM `trip` WHERE id = ?";
+		try (PreparedStatement pSt = connection.prepareStatement(queryDelete)){
+			pSt.setLong(1, trip.getId()); 
+			
+					int row = pSt.executeUpdate();
+					if (row!=0) {
+						isDelete = true;
+					}
+					try {
+						// Do SQL updates...
+						// Commit updates
+						connection.commit();
+						System.out.println("Successfully commited changes to the database !");
+						} catch (SQLException e) {
+						try {
+						// Rollback update
+						connection.rollback();
+						System.out.println("Successfully rolled back changes from the database !");
+						} catch (SQLException e1) {
+						System.out.println("Could not rollback updates " + e1.getMessage());
+						}
+					}
+					System.out.println(row);
+				}catch (SQLException e) {
+					System.err.format("SQL state : %s\n%s", e.getSQLState(), e.getMessage());
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+		return isDelete ;
+	}
+
+	@Override
+	public List<Trip> findAll() {
+		String queryFindAll = "SELECT * FROM trip ";
+		
+		if (tripList==null) {
+		
+			tripList = new ArrayList<Trip>();
+			try(PreparedStatement pSt = connection.prepareStatement(queryFindAll)){
+	
+				ResultSet rs= pSt.executeQuery();
+				try {
+					// Do SQL updates...
+					// Commit updates
+					connection.commit();
+					System.out.println("Successfully commited changes to the database !");
+					} catch (SQLException e) {
+					try {
+					// Rollback update
+					connection.rollback();
+					System.out.println("Successfully rolled back changes from the database !");
+					} catch (SQLException e1) {
+					System.out.println("Could not rollback updates " + e1.getMessage());
+					}
+				}
+				// List construction
+				while (rs.next()) {
+				Long id = rs.getLong("id");
+				Long departure = rs.getLong("departure");
+				Long arrival = rs.getLong("arrival") ;
+				Float price = rs.getFloat("price");
+				
+				Trip travel =new Trip(id, departure, arrival, price);
+				tripList.add(travel);
+				System.out.println(travel.getId() +travel.getDeparture() +travel.getArrival() )
+				}
+			}catch(SQLException sqle){//Treatment}
+			}
+	
+		}
+;
+		return tripList;
+
+	}
+
+}

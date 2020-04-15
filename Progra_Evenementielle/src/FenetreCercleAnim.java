@@ -1,0 +1,141 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class FenetreCercleAnim extends JFrame implements Observer{
+ 
+	/*Attribut pour la fenêtre */
+	private Panneau pan = new Panneau();
+	private JPanel container = new JPanel();
+	private JLabel jl = new JLabel("My Jlabel");
+	private Bouton bouton = new Bouton("Mon bouton");
+	private JButton bout1 = new JButton("Go!");
+	private JButton bout2 = new JButton("Stop!");
+	private int compteur = 0;
+	private Thread t;
+
+	
+	
+  /*Attribut pour le déplacement du cercle*/
+	private boolean animated = true ;
+	//Coordonnée de départ du cerlce
+	private int x, y ;
+	// Le booléen pour savoir so l'on recule ou non sur l'axe X
+	private boolean backX, backY ;
+/*################################"*/	
+	
+	/* Constructor*/	
+	public FenetreCercleAnim(){
+		this.setTitle("My First Animation in Java!");
+		this.setSize(500,500);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		container.setBackground(Color.white);
+		container.setLayout(new BorderLayout());
+		
+		container.add(pan, BorderLayout.CENTER);
+		
+		bout1.addActionListener(new BoutonListener());
+		bout1.setEnabled(false);
+		bout2.addActionListener(new Bouton2Listener());
+		JPanel south = new JPanel();
+
+		south.add(bout1);
+		south.add(bout2);
+		container.add(south, BorderLayout.SOUTH);		
+		
+		  //Définition d'une police d'écriture
+		  Font police = new Font("Tahoma", Font.BOLD, 16);
+		  //On l'applique au JLabel
+		  jl.setFont(police);
+		  //Changement de la couleur du texte
+		  jl.setForeground(Color.blue);
+		  //On modifie l'alignement du texte grâce aux attributs statiques
+		  //de la classe JLabel
+		  jl.setHorizontalAlignment(JLabel.CENTER);
+		        
+		container.add(jl, BorderLayout.NORTH);
+		
+		this.setContentPane(container);
+		this.setVisible(true);
+		
+		go();
+	}
+	// Effet d'une balle qui rebondi contre les bords de la fénètre  
+		private void go() {
+//			//for(int i=-50; i<pan.getWidth(); i++) {
+			x = pan.getPosX();
+			y = pan.getPosY();
+				
+				while(this.animated) {
+					// Si la coordonnée x est inférieur à 1, on avance
+					if (x < 1) backX = false; 
+					//Si la coordonnée x est supérieur à la taille du panneau moins la taille du rond, on recule
+					if (x > pan.getWidth() - 50) backX=true;
+					//Idem pour Y
+					if (y < 1)backY = false;
+					if (y > pan.getHeight() - 50) backY = true;
+						
+					
+					//Si on avance on incrémente la coordonnées
+					//backX est un booléen, donc !backX revient à écrire
+					// if(backX == false)
+					if(!backX) pan.setPosX(++x);
+					else pan.setPosX(--x);
+
+					if(!backY) pan.setPosY(++y);						
+					else pan.setPosY(--y);
+			
+				pan.repaint();
+				try {
+					Thread.sleep(3);
+				}catch(InterruptedException e) {
+					e.printStackTrace();
+				}	
+			}
+		}
+		
+		class BoutonListener implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				animated= true;
+				t = new Thread(new PlayAnimation()); 
+				t.start();
+				bout1.setEnabled(false);
+				bout2.setEnabled(true);
+			}
+			
+		}
+		class Bouton2Listener implements ActionListener{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animated = false;
+				bout1.setEnabled(true);
+				bout2.setEnabled(false);
+			}
+
+		}
+		@Override
+		public void update(int posX, int posY) {
+			// TODO Auto-generated method stub			
+		}
+		class PlayAnimation implements Runnable{
+
+			@Override
+			public void run() {
+				go();
+				
+			}
+			
+		}
+}
